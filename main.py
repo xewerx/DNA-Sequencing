@@ -1,8 +1,12 @@
 #TODO: whole project :D
 
 import random
+from networkx import Graph, draw
+import matplotlib.pyplot as plt
+import networkx as nx
 
-#stworzenie nitki DNA
+
+# stworzenie nitki DNA
 def generate_dna_sequence(length):
     nucleotides = ['A', 'T', 'C', 'G']
     sequence = ''
@@ -13,15 +17,17 @@ def generate_dna_sequence(length):
 
     return sequence
 
-#Tworzymy zbiór oligonukleotydów
+
+# Tworzymy zbiór oligonukleotydów
 def generate_subsequences(sequence, k):
     subsequences = []
     for i in range(len(sequence) - k + 1):
-        subsequence = sequence[i:i+k]
+        subsequence = sequence[i:i + k]
         subsequences.append(subsequence)
     return subsequences
 
-#sprawdzanie hybrydyzacji
+
+# sprawdzanie hybrydyzacji
 def check_hybridization(seq1, seq2):
     if len(seq1) != len(seq2):
         return False
@@ -38,12 +44,12 @@ def check_hybridization(seq1, seq2):
 dna_sequence = generate_dna_sequence(700)
 ordered_subsequences = generate_subsequences(dna_sequence, 7)
 
-#Wymieszanie elementów spektrum
+# Wymieszanie elementów spektrum
 shuffled_subsequences = random.sample(ordered_subsequences, len(ordered_subsequences))
 
-print(dna_sequence)
-print(ordered_subsequences)
-print(shuffled_subsequences)
+# print(dna_sequence)
+# print(ordered_subsequences)
+# print(shuffled_subsequences)
 
 sequence1 = ordered_subsequences[0]
 sequence2 = shuffled_subsequences[0]
@@ -53,3 +59,23 @@ if check_hybridization(sequence1, sequence2):
 else:
     print("Sekwencje nie hybrydyzują ze sobą.")
 
+# Tworzenie pustego grafu
+graph = nx.Graph()
+
+# Dodawanie wierzchołków do grafu
+graph.add_nodes_from(shuffled_subsequences)
+
+# Dodawanie krawędzi między wierzchołkami
+for i in range(len(shuffled_subsequences)):
+    for j in range(i + 1, len(shuffled_subsequences)):
+        # waga krawędzi = długość_oligonukleotydów – liczba_liter_ich_nałożenia
+        similarity = len(shuffled_subsequences[i]) - sum(
+            a == b for a, b in zip(shuffled_subsequences[i], shuffled_subsequences[j]))
+        graph.add_edge(shuffled_subsequences[i], shuffled_subsequences[j], weight=similarity)
+
+
+print(shuffled_subsequences[0])
+print(shuffled_subsequences[1])
+# # Wyświetlanie informacji o grafie
+# print("Wierzchołki grafu:", graph.nodes())
+# print("Krawędzie grafu:", graph.edges())
