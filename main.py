@@ -38,13 +38,24 @@ def check_hybridization(seq1, seq2):
 
     return True
 
+#obliczanie wag na krawędziach grafu
 def gen_weight(str1, str2):
-    for x in range(len(str1)):
-        if str2.startswith(str1[0+x:len(str1)]):
-            return len(str1[0+x:len(str1)])
-    return 0
+    weight = 0
+    for i in range(1, len(str1)):
+        if str1[:i] == str2[-i:]:
+            weight = i
+        if str2[:i] == str1[-i:]:
+            weight = i
+    return weight
 
-dna_sequence = generate_dna_sequence(10)
+
+# def gen_weight(str1, str2):
+#     for x in range(len(str1)):
+#         if str2.startswith(str1[0+x:len(str1)]):
+#             return len(str1[0+x:len(str1)])
+#     return 0
+
+dna_sequence = generate_dna_sequence(20)
 ordered_subsequences = generate_subsequences(dna_sequence, 7)
 
 # Wymieszanie elementów spektrum
@@ -82,7 +93,7 @@ nx.draw(graph, pos, with_labels=True, node_color='lightblue', edge_color='gray')
 
 # Rysowanie etykiet wag na krawędziach
 labels = nx.get_edge_attributes(graph, 'weight')
-nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels,label_pos=0.75)
 
 # Wyświetlanie grafu
 plt.show()
@@ -92,4 +103,3 @@ print(shuffled_subsequences[1])
 # # Wyświetlanie informacji o grafie
 # print("Wierzchołki grafu:", graph.nodes())
 # print("Krawędzie grafu:", graph.edges())
-
