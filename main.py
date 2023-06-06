@@ -78,7 +78,7 @@ for i in range(len(shuffled_subsequences)):
 
 # Rysowanie grafu
 pos = nx.circular_layout(graph)
-nx.draw(graph, with_labels=True, node_color='lightblue', edge_color='gray')
+nx.draw(graph, pos, with_labels=True, node_color='lightblue', edge_color='gray')
 
 # Rysowanie etykiet wag na krawędziach
 labels = nx.get_edge_attributes(graph, 'weight')
