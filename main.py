@@ -1,5 +1,3 @@
-#TODO: whole project :D
-
 import random
 from networkx import Graph, draw
 import matplotlib.pyplot as plt
@@ -40,8 +38,13 @@ def check_hybridization(seq1, seq2):
 
     return True
 
+def gen_weight(str1, str2):
+    for x in range(len(str1)):
+        if str2.startswith(str1[0+x:len(str1)]):
+            return len(str1[0+x:len(str1)])
+    return 0
 
-dna_sequence = generate_dna_sequence(700)
+dna_sequence = generate_dna_sequence(10)
 ordered_subsequences = generate_subsequences(dna_sequence, 7)
 
 # Wymieszanie elementów spektrum
@@ -54,10 +57,10 @@ shuffled_subsequences = random.sample(ordered_subsequences, len(ordered_subseque
 sequence1 = ordered_subsequences[0]
 sequence2 = shuffled_subsequences[0]
 
-if check_hybridization(sequence1, sequence2):
-    print("Sekwencje hybrydyzują ze sobą.")
-else:
-    print("Sekwencje nie hybrydyzują ze sobą.")
+# if check_hybridization(sequence1, sequence2):
+#     print("Sekwencje hybrydyzują ze sobą.")
+# else:
+#     print("Sekwencje nie hybrydyzują ze sobą.")
 
 # Tworzenie pustego grafu
 graph = nx.Graph()
@@ -69,13 +72,24 @@ graph.add_nodes_from(shuffled_subsequences)
 for i in range(len(shuffled_subsequences)):
     for j in range(i + 1, len(shuffled_subsequences)):
         # waga krawędzi = długość_oligonukleotydów – liczba_liter_ich_nałożenia
-        similarity = len(shuffled_subsequences[i]) - sum(
-            a == b for a, b in zip(shuffled_subsequences[i], shuffled_subsequences[j]))
+        similarity = len(shuffled_subsequences[i]) - gen_weight(shuffled_subsequences[i], shuffled_subsequences[j])
         graph.add_edge(shuffled_subsequences[i], shuffled_subsequences[j], weight=similarity)
 
+
+# Rysowanie grafu
+pos = nx.circular_layout(graph)
+nx.draw(graph, with_labels=True, node_color='lightblue', edge_color='gray')
+
+# Rysowanie etykiet wag na krawędziach
+labels = nx.get_edge_attributes(graph, 'weight')
+nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+
+# Wyświetlanie grafu
+plt.show()
 
 print(shuffled_subsequences[0])
 print(shuffled_subsequences[1])
 # # Wyświetlanie informacji o grafie
 # print("Wierzchołki grafu:", graph.nodes())
 # print("Krawędzie grafu:", graph.edges())
+
