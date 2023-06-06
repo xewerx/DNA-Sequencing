@@ -96,10 +96,47 @@ labels = nx.get_edge_attributes(graph, 'weight')
 nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels,label_pos=0.75)
 
 # Wyświetlanie grafu
-plt.show()
+
 
 print(shuffled_subsequences[0])
 print(shuffled_subsequences[1])
+
+# #  ---------------------------  Wyświetlanie grafu -----------------------
+plt.show()
+
 # # Wyświetlanie informacji o grafie
 # print("Wierzchołki grafu:", graph.nodes())
 # print("Krawędzie grafu:", graph.edges())
+
+
+# #  ---------------------------  Algorytm zachłanny -----------------------
+
+# Lista odwiedzonych wierzchołków
+visited_nodes = []
+
+# Rozpoczęcie od wierzchołka shuffled_subsequences[0]
+current_node = shuffled_subsequences[0]
+visited_nodes.append(current_node)
+
+# Pętla zachłanna
+while len(visited_nodes) < len(graph.nodes):
+    min_weight = float('inf')
+    next_node = None
+
+    # Wybór wierzchołka o najniższej wadze krawędzi
+    for neighbor in graph.neighbors(current_node):
+        weight = graph.edges[current_node, neighbor]['weight']
+        if weight < min_weight and neighbor not in visited_nodes:
+            min_weight = weight
+            next_node = neighbor
+
+    # Jeśli nie ma więcej sąsiadów do odwiedzenia, przerwij pętlę
+    if next_node is None:
+        break
+
+    # Dodanie wierzchołka do odwiedzonych i aktualizacja bieżącego wierzchołka
+    visited_nodes.append(next_node)
+    current_node = next_node
+
+# Wyświetlenie odwiedzonych wierzchołków
+print("Odwiedzone wierzchołki:", visited_nodes)
