@@ -3,6 +3,9 @@ from networkx import Graph, draw
 import matplotlib.pyplot as plt
 import networkx as nx
 
+#STALE:
+N = 20
+K = 7
 
 # stworzenie nitki DNA
 def generate_dna_sequence(length):
@@ -55,8 +58,8 @@ def gen_weight(str1, str2):
 #             return len(str1[0+x:len(str1)])
 #     return 0
 
-dna_sequence = generate_dna_sequence(20)
-ordered_subsequences = generate_subsequences(dna_sequence, 7)
+dna_sequence = generate_dna_sequence(N)
+ordered_subsequences = generate_subsequences(dna_sequence, K)
 
 # Wymieszanie elementów spektrum
 shuffled_subsequences = random.sample(ordered_subsequences, len(ordered_subsequences))
@@ -111,31 +114,48 @@ plt.show()
 
 # #  ---------------------------  Algorytm zachłanny -----------------------
 
-# Lista odwiedzonych wierzchołków
-visited_nodes = []
-
-# Rozpoczęcie od wierzchołka shuffled_subsequences[0]
-current_node = shuffled_subsequences[0]
-visited_nodes.append(current_node)
-
-# Pętla zachłanna
-while len(visited_nodes) < len(graph.nodes):
+# Funkcja pomocnicza do wybierania wierzchołka o najniższej wadze krawędzi
+def get_next_node(current_node):
     min_weight = float('inf')
     next_node = None
 
-    # Wybór wierzchołka o najniższej wadze krawędzi
     for neighbor in graph.neighbors(current_node):
         weight = graph.edges[current_node, neighbor]['weight']
-        if weight < min_weight and neighbor not in visited_nodes:
+        if neighbor not in visited_nodes and weight < min_weight:
             min_weight = weight
             next_node = neighbor
+
+    return next_node
+
+
+# Lista odwiedzonych wierzchołków
+visited_nodes = []
+# Inicjalizacja sumy znaków
+total_chars = 0
+# Rozpoczęcie od wierzchołka shuffled_subsequences[0]
+start_node = shuffled_subsequences[0]
+
+# Algorytm zachłanny
+current_node = start_node
+visited_nodes.append(current_node)
+total_chars += len(current_node)
+previous_chars = set(current_node)
+
+while total_chars < N:
+    next_node = get_next_node(current_node)
 
     # Jeśli nie ma więcej sąsiadów do odwiedzenia, przerwij pętlę
     if next_node is None:
         break
 
+    unique_chars = [char for char in next_node if char not in previous_chars]
+    if not unique_chars:
+        break
+
     # Dodanie wierzchołka do odwiedzonych i aktualizacja bieżącego wierzchołka
     visited_nodes.append(next_node)
+    total_chars += len(unique_chars)
+    previous_chars.update(unique_chars)
     current_node = next_node
 
 # Wyświetlenie odwiedzonych wierzchołków
