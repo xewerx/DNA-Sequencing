@@ -177,17 +177,12 @@ while len(visited_nodes) < len(graph.nodes):
     # Dodanie wierzchołka do odwiedzonych i aktualizacja bieżącego wierzchołka
     visited_nodes.append(next_node)
 
-    dna += next_node[-min_weight:]
-
     current_node = next_node
     dna += next_node[-min_weight:]
 
 # Wyświetlenie odwiedzonych wierzchołków
 print(ordered_subsequences)
 print(shuffled_subsequences)
-print(dna)
-print(len(dna))
 print("Odwiedzone wierzchołki:", visited_nodes)
-
-print("Scalone wierzchołki:", merged_string)
+print("Scalone wierzchołki:", dna, len(dna))
 plt.show()
