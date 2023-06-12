@@ -157,6 +157,11 @@ visited_nodes.append(current_node)
 #
 #     current_node = next_node
 
+
+# Inicjalizacja pustego stringa do przechowywania odwiedzonych wierzchołków
+merged_string = ""
+
+
 # Pętla zachłanna
 while len(visited_nodes) < len(graph.nodes):
     min_weight = float('inf')
@@ -176,10 +181,12 @@ while len(visited_nodes) < len(graph.nodes):
     # Dodanie wierzchołka do odwiedzonych i aktualizacja bieżącego wierzchołka
     visited_nodes.append(next_node)
     current_node = next_node
+    merged_string += next_node[-min_weight:]
 
 # Wyświetlenie odwiedzonych wierzchołków
 print(ordered_subsequences)
 print(shuffled_subsequences)
 print("Odwiedzone wierzchołki:", visited_nodes)
 
+print("Scalone wierzchołki:", merged_string)
 plt.show()
