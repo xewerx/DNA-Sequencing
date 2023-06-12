@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 #STALE:
-N = 20
+N = 14
 K = 7
 
 # stworzenie nitki DNA
@@ -104,8 +104,8 @@ nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels,label_pos=0.75)
 print(shuffled_subsequences[0])
 print(shuffled_subsequences[1])
 
-# #  ---------------------------  Wyświetlanie grafu -----------------------
-plt.show()
+# # #  ---------------------------  Wyświetlanie grafu -----------------------
+# plt.show()
 
 # # Wyświetlanie informacji o grafie
 # print("Wierzchołki grafu:", graph.nodes())
@@ -138,25 +138,48 @@ start_node = shuffled_subsequences[0]
 # Algorytm zachłanny
 current_node = start_node
 visited_nodes.append(current_node)
-total_chars += len(current_node)
-previous_chars = set(current_node)
 
-while total_chars < N:
-    next_node = get_next_node(current_node)
+# while total_chars < N:
+#     next_node = get_next_node(current_node)
+#
+#     # Jeśli nie ma więcej sąsiadów do odwiedzenia, przerwij pętlę
+#     if next_node is None:
+#         break
+#
+#     weight = graph.edges[current_node, next_node]['weight']
+#     unique_chars = set(next_node) - set(current_node)
+#
+#     if not unique_chars:
+#         break
+#     # Dodanie wierzchołka do odwiedzonych i aktualizacja bieżącego wierzchołka
+#     visited_nodes.append(next_node)
+#     total_chars += weight
+#
+#     current_node = next_node
+
+# Pętla zachłanna
+while len(visited_nodes) < len(graph.nodes):
+    min_weight = float('inf')
+    next_node = None
+
+    # Wybór wierzchołka o najniższej wadze krawędzi
+    for neighbor in graph.neighbors(current_node):
+        weight = graph.edges[current_node, neighbor]['weight']
+        if weight < min_weight and neighbor not in visited_nodes:
+            min_weight = weight
+            next_node = neighbor
 
     # Jeśli nie ma więcej sąsiadów do odwiedzenia, przerwij pętlę
     if next_node is None:
         break
 
-    unique_chars = [char for char in next_node if char not in previous_chars]
-    if not unique_chars:
-        break
-
     # Dodanie wierzchołka do odwiedzonych i aktualizacja bieżącego wierzchołka
     visited_nodes.append(next_node)
-    total_chars += len(unique_chars)
-    previous_chars.update(unique_chars)
     current_node = next_node
 
 # Wyświetlenie odwiedzonych wierzchołków
+print(ordered_subsequences)
+print(shuffled_subsequences)
 print("Odwiedzone wierzchołki:", visited_nodes)
+
+plt.show()
