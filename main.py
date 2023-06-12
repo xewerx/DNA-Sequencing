@@ -45,8 +45,8 @@ def check_hybridization(seq1, seq2):
 def gen_weight(str1, str2):
     weight = 0
     for i in range(1, len(str1)):
-        if str1[:i] == str2[-i:]:
-            weight = i
+        # if str1[:i] == str2[-i:]:
+        #     weight = i
         if str2[:i] == str1[-i:]:
             weight = i
     return weight
@@ -77,7 +77,7 @@ sequence2 = shuffled_subsequences[0]
 #     print("Sekwencje nie hybrydyzują ze sobą.")
 
 # Tworzenie pustego grafu
-graph = nx.Graph()
+graph = nx.DiGraph()
 
 # Dodawanie wierzchołków do grafu
 graph.add_nodes_from(shuffled_subsequences)
@@ -157,6 +157,7 @@ visited_nodes.append(current_node)
 #
 #     current_node = next_node
 
+dna = current_node
 # Pętla zachłanna
 while len(visited_nodes) < len(graph.nodes):
     min_weight = float('inf')
@@ -175,11 +176,16 @@ while len(visited_nodes) < len(graph.nodes):
 
     # Dodanie wierzchołka do odwiedzonych i aktualizacja bieżącego wierzchołka
     visited_nodes.append(next_node)
+
+    dna += next_node[-min_weight:]
+
     current_node = next_node
 
 # Wyświetlenie odwiedzonych wierzchołków
 print(ordered_subsequences)
 print(shuffled_subsequences)
+print(dna)
+print(len(dna))
 print("Odwiedzone wierzchołki:", visited_nodes)
 
 plt.show()
