@@ -1,5 +1,6 @@
 import random
 import time
+from constatnts import K, N
 
 from generator import create_errors, generate_dna_sequence, generate_subsequences, save_sequence_to_file, save_subsequences_to_file
 from get_levenshtein_distance import levenshtein_distance
@@ -153,9 +154,6 @@ def merge_strings(string_list):
     return merged_string
 
 if __name__ == "__main__":
-    # stałe
-    N = 100
-    K = 7
 
     # generowanie danych
     dna_sequence = generate_dna_sequence(N)

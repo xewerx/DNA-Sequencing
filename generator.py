@@ -1,7 +1,7 @@
 import os
 import random
 
-K = 100
+from constatnts import K
 
 # stworzenie nitki DNA
 def generate_dna_sequence(length):
