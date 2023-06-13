@@ -131,17 +131,17 @@ class Path:
 
 if __name__ == "__main__":
 
-    p = 0.7  #
-    Q = 0.7  #
-    alfa = 1  #
-    beta = 5  #
+    p = 0.7
+    Q = 0.7
+    alfa = 1
+    beta = 5
     ants_number = 30
     iterations_number = 10
 
     best_path = []
     best_result = 0
 
-    n = 209
+    n = 100
     nodes, paths = read_file('data.txt')
 
     set_lengths(nodes, paths)
