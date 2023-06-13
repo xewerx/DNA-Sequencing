@@ -74,9 +74,11 @@ class Node:
         self.value = value
         self.id = id
 
-    def get_distance(self, other):
+    def get_distance(self, other): 
         for i in range(len(self.value)):
-            if self.value[i:] == other.value[:len(other.value) - i]:
+            if self.value[i:] == other.value[:len(other.value) - i]: # waga_łuku = liczba_liter_nałożenia_oligonukleotydów
+                if i == 0:
+                    return len(self.value)
                 return i
         return len(self.value)
     
