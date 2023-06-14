@@ -158,11 +158,11 @@ def merge_strings(string_list):
 if __name__ == "__main__":
 
     # generowanie danych
-    dna_sequence = generate_dna_sequence(N)
-    ordered_subsequences = generate_subsequences(dna_sequence, K)
+    original_dna = generate_dna_sequence(N)
+    ordered_subsequences = generate_subsequences(original_dna, K)
     shuffled_subsequences = random.sample(ordered_subsequences, len(ordered_subsequences))
     shuffled_subsequences_with_errors = create_errors(shuffled_subsequences, 10, 15)
-    save_sequence_to_file(dna_sequence, 'input', 'dane.txt')
+    save_sequence_to_file(original_dna, 'input', 'dane.txt')
     save_subsequences_to_file(shuffled_subsequences_with_errors, 'input', 'sequences.txt')
     
     # uruchomienie ACO
@@ -188,11 +188,7 @@ if __name__ == "__main__":
     final_length = sum(node.get_path(best_path[i + 1], paths).length for i, node in enumerate(best_path[:-1]))
 
     string_list = convert_to_strings(best_path)
-
     colony_dna_sequence_best_path = merge_strings(string_list)
-
-    with open('input/dane.txt', 'r') as file:
-        original_dna = file.read()
 
     distance = levenshtein_distance(original_dna, colony_dna_sequence_best_path)
     levenshtein_value = (distance / (max(len(colony_dna_sequence_best_path), len(original_dna)))) * 100
@@ -201,9 +197,9 @@ if __name__ == "__main__":
     execution_time = end_time - start_time
 
     with open(f"output/output.txt", "w") as f:
-        f.write("Final length: " + str(final_length) + '\n')
-        f.write("Number of words: " + str(len(best_path)) + '\n')
-        f.write("Execution time: " + str(execution_time) + "seconds" + '\n')
+        f.write("Dlugosc znalezionego DNA: " + str(final_length) + '\n')
+        f.write("Liczba odwiedzonych wierzcholkow: " + str(len(best_path)) + '\n')
+        f.write("Czas wykonywania algorytmu: " + str(execution_time) + "seconds" + '\n')
         f.write("Best road  (odwiedzone wierzcholki): " + str(best_path) + '\n')
         f.write("rho: " + str(rho) + '\n')
         f.write("Q: " + str(Q) + '\n')
@@ -212,6 +208,6 @@ if __name__ == "__main__":
         f.write("Liczba mrowek: " + str(colony_size) + '\n')
         f.write("Liczba krokow:"  + str(steps) + '\n')
         f.write("Pokrycie grafu: (odwiedzone wiezcholki/ilosc wierzcholkow): " + str(((len(best_path) / (N - K + 1)) * 100)) + "%" + '\n')
-        f.write("DNA wejsciowe (z pliku dane.txt): " + original_dna + '\n')
-        f.write("colony_dna_sequence_best_path: " + colony_dna_sequence_best_path + '\n')
-        f.write("Miara Vewensteina: " + str(levenshtein_value) + "%" + '\n')
+        f.write("DNA oryginalne: " + original_dna + '\n')
+        f.write("DNA znalezione: " + colony_dna_sequence_best_path + '\n')
+        f.write("Miara Levenshtein: " + str(levenshtein_value) + "%" + '\n')

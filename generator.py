@@ -54,3 +54,18 @@ def save_subsequences_to_file(subsequences, folder, filename):
     with open(file_path, 'w') as file:
         for subsequence in subsequences:
             file.write(subsequence + '\n')
+
+def read_sequence_from_file(file_path):
+    with open(file_path) as f:
+        sequence = f.readlines()
+    return sequence
+
+def read_subsequences_from_file(file_path):
+    subsequences = []
+    with open(file_path) as f:
+        lines = f.readlines()
+    for i, line in enumerate(lines):
+        value = line.replace('\n', '')
+        subsequences.append(value)
+
+    return subsequences
